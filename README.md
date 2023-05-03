@@ -1,5 +1,8 @@
 # OpenXES CLI
 
+![OpenXES-CLI](https://github.com/AutomatedProcessImprovement/openxes-cli/actions/workflows/build.yaml/badge.svg)
+![version](https://img.shields.io/github/v/tag/AutomatedProcessImprovement/openxes-cli)
+
 This is a command line interface for the OpenXES library. It allows you to convert XES files to CSV files and vice
 versa.
 
@@ -20,3 +23,8 @@ usage: openxes-cli
  -o,--output <arg>   Output file path (optional)
  -t,--to <arg>       Output format extension
 ```
+
+## Releases
+
+You can browse compiled releases in the [Releases](https://github.com/AutomatedProcessImprovement/openxes-cli/releases)
+section.
