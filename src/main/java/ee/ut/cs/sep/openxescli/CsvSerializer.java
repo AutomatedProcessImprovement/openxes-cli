@@ -53,7 +53,7 @@ public class CsvSerializer implements XSerializer {
                     String timestamp = attributes.get("time:timestamp").toString();
                     String activity = attributes.get("concept:name").toString();
                     String resource = attributes.get("org:resource").toString();
-                    String transition = attributes.get("lifecycle:transition").toString();
+                    String transition = attributes.get("lifecycle:transition").toString();  // start or complete, or only complete
 
                     if (transition.equals("start")) {
                         csvEvent.setStartTimestamp(timestamp);
@@ -63,6 +63,8 @@ public class CsvSerializer implements XSerializer {
                         assert csvEvent.getActivity().equals(activity);
                         assert csvEvent.getResource().equals(resource);
 
+                        csvEvent.setActivity(activity);
+                        csvEvent.setResource(resource);
                         csvEvent.setEndTimestamp(timestamp);
 
                         try {
