@@ -1,4 +1,4 @@
-package org.example;
+package ee.ut.cs.sep.openxescli;
 
 import lombok.Data;
 
@@ -9,8 +9,10 @@ public class Event {
     private String resource;
     private String startTimestamp;
     private String endTimestamp;
+
     public Event() {
     }
+
     public Event(String caseId, String activity, String resource, String startTimestamp, String endTimestamp) {
         this.caseId = caseId;
         this.activity = activity;

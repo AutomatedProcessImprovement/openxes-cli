@@ -2,8 +2,8 @@ plugins {
     id("java")
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "ee.ut.cs.sep.openxescli"
+version = "1.0"
 
 repositories {
     mavenCentral()

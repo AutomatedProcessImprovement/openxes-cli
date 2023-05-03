@@ -1,4 +1,4 @@
-package org.example;
+package ee.ut.cs.sep.openxescli;
 
 import lombok.Data;
 import org.deckfour.xes.model.XAttributeMap;

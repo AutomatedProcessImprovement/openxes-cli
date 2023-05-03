@@ -1,4 +1,4 @@
-package org.example;
+package ee.ut.cs.sep.openxescli;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
