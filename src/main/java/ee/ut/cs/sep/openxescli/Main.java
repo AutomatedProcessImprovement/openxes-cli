@@ -120,6 +120,7 @@ public class Main {
             Event event = new Event(caseId, activity, resource, startTimestamp, endTimestamp);
             log.addEvent(caseId, event);
         }
+
         return log;
     }
 }

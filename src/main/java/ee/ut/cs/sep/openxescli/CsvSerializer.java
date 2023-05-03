@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
+import org.deckfour.xes.model.impl.XAttributeLiteralImpl;
 import org.deckfour.xes.out.XSerializer;
 
 import java.io.IOException;
@@ -50,10 +51,10 @@ public class CsvSerializer implements XSerializer {
 
                     XEvent event = xTrace.get(i);
                     XAttributeMap attributes = event.getAttributes();
-                    String timestamp = attributes.get("time:timestamp").toString();
-                    String activity = attributes.get("concept:name").toString();
-                    String resource = attributes.get("org:resource").toString();
-                    String transition = attributes.get("lifecycle:transition").toString();  // start or complete, or only complete
+                    String timestamp = attributes.getOrDefault("time:timestamp", new XAttributeLiteralImpl("time:timestamp", "")).toString();
+                    String activity = attributes.getOrDefault("concept:name", new XAttributeLiteralImpl("concept:name", "")).toString();
+                    String resource = attributes.getOrDefault("org:resource", new XAttributeLiteralImpl("org:resource", "")).toString();
+                    String transition = attributes.getOrDefault("lifecycle:transition", new XAttributeLiteralImpl("lifecycle:transition", "complete")).toString();  // start or complete, or only complete
 
                     if (transition.equals("start")) {
                         csvEvent.setStartTimestamp(timestamp);
