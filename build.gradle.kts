@@ -1,9 +1,15 @@
 plugins {
+    application
     id("java")
 }
 
 group = "ee.ut.cs.sep.openxescli"
 version = "1.0"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
@@ -25,4 +31,24 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass.set("ee.ut.cs.sep.openxescli.Main")
+}
+
+tasks {
+    jar {
+        manifest {
+            attributes(
+                    "Main-Class" to "ee.ut.cs.sep.openxescli.Main"
+            )
+        }
+
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+        archiveFileName.set("openxes-cli.jar")
+    }
+
 }

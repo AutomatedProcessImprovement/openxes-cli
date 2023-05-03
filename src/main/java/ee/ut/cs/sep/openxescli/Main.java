@@ -1,9 +1,6 @@
 package ee.ut.cs.sep.openxescli;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
+import org.apache.commons.cli.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.deckfour.xes.in.XParser;
@@ -21,23 +18,35 @@ public class Main {
         options.addOption("f", "from", true, "Input file path");
         options.addOption("t", "to", true, "Output format extension");
         options.addOption("o", "output", true, "Output file path (optional)");
+        options.addOption("h", "help", false, "Print help message");
 
         CommandLineParser argsParser = new DefaultParser();
         CommandLine cmd = argsParser.parse(options, args);
 
+        if (cmd.hasOption("h")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("openxes-cli", options);
+            return;
+        }
+
         String inputPath = cmd.getOptionValue("f");
-        if (inputPath.isEmpty()) {
-            throw new Exception("Input path is empty");
+        if (inputPath == null || inputPath.isEmpty()) {
+            System.out.println("Input path is empty");
+            return;
         }
 
         File source = new File(inputPath);
         if (!source.exists()) {
-            throw new Exception("Input file does not exist");
+            System.out.println("Input file does not exist");
+            return;
         }
 
         String outputFormat = cmd.getOptionValue("t");
-        if (!outputFormat.equalsIgnoreCase("xes") && !outputFormat.equalsIgnoreCase("csv")) {
-            throw new Exception("Output format is not supported");
+        if (outputFormat == null ||
+                !outputFormat.equalsIgnoreCase("xes") &&
+                        !outputFormat.equalsIgnoreCase("csv")) {
+            System.out.println("Output format is not supported");
+            return;
         }
 
         String outputPath = cmd.getOptionValue("o");
@@ -55,7 +64,7 @@ public class Main {
         } else if (outputFormat.equalsIgnoreCase("xes")) {
             csvToXes(source, destination);
         } else {
-            throw new Exception("Output format is not supported");
+            System.out.println("Output format is not supported");
         }
     }
 
@@ -63,7 +72,6 @@ public class Main {
         Collection<XLog> logs = null;
         for (XParser parser : XParserRegistry.instance().getAvailable()) {
             if (parser.canParse(source)) {
-                System.out.println("Using input parser: " + parser.name());
                 logs = parser.parse(source);
                 break;
             }
