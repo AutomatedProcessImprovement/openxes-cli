@@ -11,7 +11,7 @@ versa.
 Example:
 
 ```shell
-java -jar build/libs/openxes-cli.jar -f input.xes -t csv -o outut.csv
+java -jar openxes-cli.jar -f input.xes -t csv -o outut.csv
 ```
 
 CLI options:
