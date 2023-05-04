@@ -61,8 +61,8 @@ public class CsvSerializer implements XSerializer {
                         csvEvent.setActivity(activity);
                         csvEvent.setResource(resource);
                     } else if (transition.equals("complete")) {
-                        assert csvEvent.getActivity().equals(activity);
-                        assert csvEvent.getResource().equals(resource);
+                        assert csvEvent.getActivity() == null || csvEvent.getActivity().equals(activity);
+                        assert csvEvent.getActivity() == null || csvEvent.getResource().equals(resource);
 
                         csvEvent.setActivity(activity);
                         csvEvent.setResource(resource);
