@@ -4,11 +4,11 @@ plugins {
 }
 
 group = "ee.ut.cs.sep.openxescli"
-version = "1.0.2"
+version = "1.0.3"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 repositories {
@@ -50,5 +50,4 @@ tasks {
         from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
         archiveFileName.set("openxes-cli.jar")
     }
-
 }

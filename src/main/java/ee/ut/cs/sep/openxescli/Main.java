@@ -8,9 +8,11 @@ import org.deckfour.xes.in.XParserRegistry;
 import org.deckfour.xes.model.XLog;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -80,7 +82,7 @@ public class Main {
         System.gc();
 
         CsvSerializer serializer = new CsvSerializer();
-        OutputStream output = new BufferedOutputStream(new FileOutputStream(destination));
+        OutputStream output = new BufferedOutputStream(Files.newOutputStream(destination.toPath()));
         serializer.serialize(logs.iterator().next(), output);
         output.flush();
         output.close();
@@ -101,7 +103,7 @@ public class Main {
 
         // Getting columns
 
-        List<String> columns = records.iterator().next().stream().toList();
+        List<String> columns = records.iterator().next().stream().collect(Collectors.toList());
         HashMap<String, Integer> columnsMap = new HashMap<>();
         for (int i = 0; i < columns.size(); i++) {
             columnsMap.put(columns.get(i), i);
