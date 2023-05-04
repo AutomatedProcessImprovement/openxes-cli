@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c898e17-05e7-466a-8045-a0db6ef51003" name="Changes" comment="Add basic tests" />
+    <list default="true" id="4c898e17-05e7-466a-8045-a0db6ef51003" name="Changes" comment="Add basic tests">
+      <change beforePath="$PROJECT_DIR$/src/main/java/ee/ut/cs/sep/openxescli/CsvSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ee/ut/cs/sep/openxescli/CsvSerializer.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -241,7 +243,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683197257800</updated>
-      <workItem from="1683197259119" duration="3872000" />
+      <workItem from="1683197259119" duration="6766000" />
     </task>
     <task id="LOCAL-00001" summary="Downgrade to 1.8">
       <created>1683197603451</created>
@@ -264,7 +266,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683201201960</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add basic tests">
+      <created>1683201220466</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1683201220466</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,16 +284,5 @@
     <MESSAGE value="Fix CI settings" />
     <MESSAGE value="Add basic tests" />
     <option name="LAST_COMMIT_MESSAGE" value="Add basic tests" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ee/ut/cs/sep/openxescli/CsvSerializer.java</url>
-          <line>63</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

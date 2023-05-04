@@ -54,7 +54,7 @@ public class CsvSerializer implements XSerializer {
                     String timestamp = attributes.getOrDefault("time:timestamp", new XAttributeLiteralImpl("time:timestamp", "")).toString();
                     String activity = attributes.getOrDefault("concept:name", new XAttributeLiteralImpl("concept:name", "")).toString();
                     String resource = attributes.getOrDefault("org:resource", new XAttributeLiteralImpl("org:resource", "")).toString();
-                    String transition = attributes.getOrDefault("lifecycle:transition", new XAttributeLiteralImpl("lifecycle:transition", "complete")).toString();  // start or complete, or only complete
+                    String transition = attributes.getOrDefault("lifecycle:transition", new XAttributeLiteralImpl("lifecycle:transition", "complete")).toString().toLowerCase();  // start or complete, or only complete
 
                     if (transition.equals("start")) {
                         csvEvent.setStartTimestamp(timestamp);
