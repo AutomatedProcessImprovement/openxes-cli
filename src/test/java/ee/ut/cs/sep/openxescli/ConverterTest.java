@@ -41,6 +41,17 @@ class ConverterTest {
     }
 
     @Test
+    void xesToCsvSorted() throws Exception {
+        File inputOne = new File("src/test/resources/ConsultaDataMining201618.xes");
+        File outputOne = new File("src/test/resources/co_output.csv");
+
+        Converter.xesToCsv(inputOne, outputOne);
+        assertTrue(outputOne.exists());
+
+//        outputOne.delete();
+    }
+
+    @Test
     void csvToXes() {
     }
 }

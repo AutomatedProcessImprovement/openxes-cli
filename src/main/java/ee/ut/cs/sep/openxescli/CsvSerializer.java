@@ -12,6 +12,7 @@ import org.deckfour.xes.out.XSerializer;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.stream.Collectors;
 
 public class CsvSerializer implements XSerializer {
     public CsvSerializer() {
@@ -56,49 +57,59 @@ public class CsvSerializer implements XSerializer {
             csvPrinter.printRecord("case:concept:name", "concept:name", "org:resource", "start_timestamp", "time:timestamp");
 
             xLog.forEach(xTrace -> {
-                // Sort trace events by resource and activity
-                xTrace.sort((xEvent1, xEvent2) -> ComparisonChain.start()
-                        .compare(xEvent1.getAttributes().getOrDefault("org:resource", defaultResource).toString(),
-                                xEvent2.getAttributes().getOrDefault("org:resource", defaultResource).toString())
-                        .compare(xEvent1.getAttributes().getOrDefault("concept:name", defaultConceptName).toString(),
-                                xEvent2.getAttributes().getOrDefault("concept:name", defaultConceptName).toString())
-                        .result());
+                val caseId = xTrace.getAttributes().getOrDefault("concept:name", defaultConceptName).toString();
 
-                // Process events
+                // Group events by resource
+                val resourceGroups = xTrace.stream().collect(Collectors.groupingBy(xEvent -> {
+                    XAttributeMap attributes = xEvent.getAttributes();
+                    return attributes.getOrDefault("org:resource", defaultResource).toString();
+                }));
 
-                Event csvEvent = new Event();
+                // Group resource groups by activity
+                resourceGroups.forEach((resource, events) -> {
+                    val activityGroups = events.stream().collect(Collectors.groupingBy(xEvent -> {
+                        XAttributeMap attributes = xEvent.getAttributes();
+                        return attributes.getOrDefault("concept:name", defaultConceptName).toString();
+                    }));
 
-                for (int i = 0; i < xTrace.size(); i++) {
-                    csvEvent.setCaseId(xTrace.getAttributes().get("concept:name").toString());
+                    activityGroups.forEach((activity, events2) -> {
+                        // Sort events by timestamp
+                        events2.sort((xEvent1, xEvent2) -> ComparisonChain.start()
+                                .compare(xEvent1.getAttributes().getOrDefault("time:timestamp", defaultTimestamp).toString(),
+                                        xEvent2.getAttributes().getOrDefault("time:timestamp", defaultTimestamp).toString())
+                                .result());
 
-                    XEvent event = xTrace.get(i);
-                    XAttributeMap attributes = event.getAttributes();
-                    String timestamp = attributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
-                    String activity = attributes.getOrDefault("concept:name", defaultConceptName).toString();
-                    String resource = attributes.getOrDefault("org:resource", defaultResource).toString();
-                    String transition = attributes.getOrDefault("lifecycle:transition", defaultTransition).toString().toLowerCase();  // start or complete, or only complete
+                        // Append events
 
-                    if (transition.equals("start")) {
-                        csvEvent.setStartTimestamp(timestamp);
-                        csvEvent.setActivity(activity);
-                        csvEvent.setResource(resource);
-                    } else if (transition.equals("complete")) {
-                        assert csvEvent.getActivity() == null || csvEvent.getActivity().equals(activity);
-                        assert csvEvent.getActivity() == null || csvEvent.getResource().equals(resource);
+                        Event csvEvent = new Event();
 
-                        csvEvent.setActivity(activity);
-                        csvEvent.setResource(resource);
-                        csvEvent.setEndTimestamp(timestamp);
+                        csvEvent.setCaseId(caseId);
 
-                        try {
-                            csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        for (XEvent event : events2) {
+                            XAttributeMap attributes = event.getAttributes();
+                            String timestamp = attributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
+                            String transition = attributes.getOrDefault("lifecycle:transition", defaultTransition).toString().toLowerCase();
+
+                            if (transition.equals("start")) {
+                                csvEvent.setStartTimestamp(timestamp);
+                                csvEvent.setActivity(activity);
+                                csvEvent.setResource(resource);
+                            } else if (transition.equals("complete")) {
+                                csvEvent.setActivity(activity);
+                                csvEvent.setResource(resource);
+                                csvEvent.setEndTimestamp(timestamp);
+
+                                try {
+                                    csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                csvEvent = new Event();
+                            }
                         }
-
-                        csvEvent = new Event();
-                    }
-                }
+                    });
+                });
             });
         }
 
