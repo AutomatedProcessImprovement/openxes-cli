@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "ee.ut.cs.sep.openxescli"
-version = "1.0.5"
+version = "1.1.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
