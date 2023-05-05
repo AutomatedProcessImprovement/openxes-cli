@@ -30,6 +30,15 @@ public class Event {
         this.endTimestamp = endTimestamp;
     }
 
+    public boolean isComplete() {
+        return
+                caseId != null && !caseId.isEmpty()
+                && activity != null && !activity.isEmpty()
+                && resource != null && !resource.isEmpty()
+                && startTimestamp != null && !startTimestamp.isEmpty()
+                && endTimestamp != null && !endTimestamp.isEmpty();
+    }
+
     public Optional<XAttributeMap> toStartAttributes() {
         if (startTimestamp == null || startTimestamp.isEmpty()) {
             return Optional.empty();

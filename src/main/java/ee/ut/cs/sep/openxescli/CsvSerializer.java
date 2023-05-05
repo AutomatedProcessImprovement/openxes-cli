@@ -12,6 +12,11 @@ import org.deckfour.xes.out.XSerializer;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CsvSerializer implements XSerializer {
@@ -88,22 +93,37 @@ public class CsvSerializer implements XSerializer {
                         csvEvent.setResource(resource);
                         csvEvent.setActivity(activity);
 
-                        for (XEvent event : events2) {
-                            XAttributeMap attributes = event.getAttributes();
-                            String timestamp = attributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
+                        XEvent[] startEvents = events2.stream().filter(xEvent -> {
+                            XAttributeMap attributes = xEvent.getAttributes();
                             String transition = attributes.getOrDefault("lifecycle:transition", defaultTransition).toString().toLowerCase();
+                            return transition.equals("start");
+                        }).toArray(XEvent[]::new);
 
-                            if (transition.equals("start")) {
-                                csvEvent.setStartTimestamp(timestamp);
-                            } else if (transition.equals("complete")) {
-                                csvEvent.setEndTimestamp(timestamp);
+                        XEvent[] completeEvents = events2.stream().filter(xEvent -> {
+                            XAttributeMap attributes = xEvent.getAttributes();
+                            String transition = attributes.getOrDefault("lifecycle:transition", defaultTransition).toString().toLowerCase();
+                            return transition.equals("complete");
+                        }).toArray(XEvent[]::new);
 
-                                // Append event to CSV
-                                try {
-                                    csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                        assert startEvents.length == completeEvents.length;
+
+                        for (int i = 0; i < startEvents.length; i++) {
+                            XEvent startEvent = startEvents[i];
+                            XEvent completeEvent = completeEvents[i];
+
+                            XAttributeMap startAttributes = startEvent.getAttributes();
+                            XAttributeMap completeAttributes = completeEvent.getAttributes();
+
+                            String startTimestamp = startAttributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
+                            String completeTimestamp = completeAttributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
+
+                            csvEvent.setStartTimestamp(startTimestamp);
+                            csvEvent.setEndTimestamp(completeTimestamp);
+
+                            try {
+                                csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
                     });
@@ -112,5 +132,16 @@ public class CsvSerializer implements XSerializer {
         }
 
         outputStream.write(csvBuffer.toString().getBytes());
+    }
+
+    private Optional<Date> parseDate(String date) {
+        return Optional.ofNullable(date).map(s -> {
+            try {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+                return dateFormat.parse(s);
+            } catch (Exception e) {
+                return null;
+            }
+        });
     }
 }
