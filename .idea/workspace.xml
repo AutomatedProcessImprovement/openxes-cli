@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c898e17-05e7-466a-8045-a0db6ef51003" name="Changes" comment="Group by resource and activity before processing">
+    <list default="true" id="4c898e17-05e7-466a-8045-a0db6ef51003" name="Changes" comment="Fix tests">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ee/ut/cs/sep/openxescli/CsvSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ee/ut/cs/sep/openxescli/CsvSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ee/ut/cs/sep/openxescli/EventLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ee/ut/cs/sep/openxescli/EventLog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ee/ut/cs/sep/openxescli/ConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ee/ut/cs/sep/openxescli/ConverterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -65,6 +70,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/lib/OpenXES-20211004.jar!/org/deckfour/xes/classification/XEventClassifier.class" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/lib/OpenXES-20211004.jar!/org/deckfour/xes/model/XLog.class" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="jt9vcnsx" />
   </component>
@@ -91,10 +100,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.118343174",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.10570824",
+    "project.structure.side.proportion": "0.27493495",
+    "settings.editor.selected.configurable": "preferences.fileTypes",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -106,7 +115,7 @@
       <recent name="ee.ut.cs.sep.openxescli" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.openxes-cli [jar]">
+  <component name="RunManager" selected="Gradle.ConverterTest.xesToCsv3">
     <configuration name="ConverterTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -121,6 +130,30 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;ee.ut.cs.sep.openxescli.ConverterTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>true</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="ConverterTest.xesToCsv3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ee.ut.cs.sep.openxescli.ConverterTest.xesToCsv3&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -155,7 +188,7 @@
       <ForceTestExec>true</ForceTestExec>
       <method v="2" />
     </configuration>
-    <configuration name="ConverterTest.xesToCsvSorting" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ConverterTest.xesToCsvSorted2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -168,31 +201,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ee.ut.cs.sep.openxescli.ConverterTest.xesToCsvSorting&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>true</ForceTestExec>
-      <method v="2" />
-    </configuration>
-    <configuration name="ConverterTest.xesToCsvTwo" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;ee.ut.cs.sep.openxescli.ConverterTest.xesToCsvTwo&quot;" />
+            <option value="&quot;ee.ut.cs.sep.openxescli.ConverterTest.xesToCsvSorted2&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -227,11 +236,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.ConverterTest.xesToCsv3" />
         <item itemvalue="Gradle.openxes-cli [jar]" />
+        <item itemvalue="Gradle.ConverterTest.xesToCsvSorted2" />
         <item itemvalue="Gradle.ConverterTest.xesToCsvSorted" />
         <item itemvalue="Gradle.ConverterTest" />
-        <item itemvalue="Gradle.ConverterTest.xesToCsvSorting" />
-        <item itemvalue="Gradle.ConverterTest.xesToCsvTwo" />
       </list>
     </recent_temporary>
   </component>
@@ -243,7 +252,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683197257800</updated>
-      <workItem from="1683197259119" duration="13518000" />
+      <workItem from="1683197259119" duration="15971000" />
+      <workItem from="1683280885211" duration="3307000" />
     </task>
     <task id="LOCAL-00001" summary="Downgrade to 1.8">
       <created>1683197603451</created>
@@ -294,7 +304,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683221819085</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fix tests">
+      <created>1683222003232</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683222003232</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,18 +324,22 @@
     <MESSAGE value="Lower case lifecycle:transition value before comparison" />
     <MESSAGE value="Sort log and traces during XES to CSV conversion" />
     <MESSAGE value="Group by resource and activity before processing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Group by resource and activity before processing" />
+    <MESSAGE value="Fix tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="NONE" type="java-line">
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/ee/ut/cs/sep/openxescli/ConverterTest.java</url>
-          <line>26</line>
-          <log-expression expression="    void xesToCsvTwo() throws Exception {&#10;        File inputOne = new File(&quot;src/test/resources/PurchasingExample.xes.gz&quot;);&#10;        File outputOne = new File(&quot;src/test/resources/pe_output.csv&quot;);&#10;        File outputTwo = new File(&quot;src/test/resources/pe_output.xes&quot;);&#10;&#10;        Converter.xesToCsv(inputOne, outputOne);&#10;        assertTrue(outputOne.exists());&#10;&#10;        Converter.csvToXes(outputOne, outputTwo);&#10;        assertTrue(outputTwo.exists());&#10;&#10;        outputTwo.delete();&#10;        outputOne.delete();&#10;    }" language="JAVA" />
-          <option name="timeStamp" value="11" />
+          <line>57</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

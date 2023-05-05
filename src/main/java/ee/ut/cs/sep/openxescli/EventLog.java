@@ -26,7 +26,7 @@ public class EventLog {
 
     private static void updateTraceCaseIdIfNotPresent(String caseId, XAttributeMap traceAttributes) {
         if (traceAttributes.get("concept:name") == null) {
-            XAttributeLiteralImpl caseIdAttribute = new XAttributeLiteralImpl("case:concept:name", caseId);
+            XAttributeLiteralImpl caseIdAttribute = new XAttributeLiteralImpl("concept:name", caseId);
             traceAttributes.put("concept:name", caseIdAttribute);
         }
     }

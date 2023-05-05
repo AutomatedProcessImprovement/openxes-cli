@@ -57,7 +57,8 @@ public class CsvSerializer implements XSerializer {
             csvPrinter.printRecord("case:concept:name", "concept:name", "org:resource", "start_timestamp", "time:timestamp");
 
             xLog.forEach(xTrace -> {
-                val caseId = xTrace.getAttributes().getOrDefault("concept:name", defaultConceptName).toString();
+                val caseId = xTrace.getAttributes().get("concept:name").toString();
+                assert caseId != null && !caseId.isEmpty();
 
                 // Group events by resource
                 val resourceGroups = xTrace.stream().collect(Collectors.groupingBy(xEvent -> {
@@ -79,11 +80,13 @@ public class CsvSerializer implements XSerializer {
                                         xEvent2.getAttributes().getOrDefault("time:timestamp", defaultTimestamp).toString())
                                 .result());
 
-                        // Append events
+                        // Compose an event with start and end timestamps
 
                         Event csvEvent = new Event();
 
                         csvEvent.setCaseId(caseId);
+                        csvEvent.setResource(resource);
+                        csvEvent.setActivity(activity);
 
                         for (XEvent event : events2) {
                             XAttributeMap attributes = event.getAttributes();
@@ -92,20 +95,15 @@ public class CsvSerializer implements XSerializer {
 
                             if (transition.equals("start")) {
                                 csvEvent.setStartTimestamp(timestamp);
-                                csvEvent.setActivity(activity);
-                                csvEvent.setResource(resource);
                             } else if (transition.equals("complete")) {
-                                csvEvent.setActivity(activity);
-                                csvEvent.setResource(resource);
                                 csvEvent.setEndTimestamp(timestamp);
 
+                                // Append event to CSV
                                 try {
                                     csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-
-                                csvEvent = new Event();
                             }
                         }
                     });

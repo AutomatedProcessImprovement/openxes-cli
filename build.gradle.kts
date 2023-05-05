@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "ee.ut.cs.sep.openxescli"
-version = "1.1.1"
+version = "1.1.2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -27,6 +27,7 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("tech.tablesaw:tablesaw-core:0.43.1")
 }
 
 tasks.test {
