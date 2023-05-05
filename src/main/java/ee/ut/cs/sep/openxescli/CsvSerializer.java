@@ -58,26 +58,28 @@ public class CsvSerializer implements XSerializer {
 
         Appendable csvBuffer = new StringBuilder();
 
+        // Compose CSV incrementally
         try (CSVPrinter csvPrinter = new CSVPrinter(csvBuffer, CSVFormat.DEFAULT)) {
             csvPrinter.printRecord("case:concept:name", "concept:name", "org:resource", "start_timestamp", "time:timestamp");
 
+            // Event log level
             xLog.forEach(xTrace -> {
                 val caseId = xTrace.getAttributes().get("concept:name").toString();
                 assert caseId != null && !caseId.isEmpty();
 
-                // Group events by resource
                 val resourceGroups = xTrace.stream().collect(Collectors.groupingBy(xEvent -> {
                     XAttributeMap attributes = xEvent.getAttributes();
                     return attributes.getOrDefault("org:resource", defaultResource).toString();
                 }));
 
-                // Group resource groups by activity
+                // Resource level
                 resourceGroups.forEach((resource, events) -> {
                     val activityGroups = events.stream().collect(Collectors.groupingBy(xEvent -> {
                         XAttributeMap attributes = xEvent.getAttributes();
                         return attributes.getOrDefault("concept:name", defaultConceptName).toString();
                     }));
 
+                    // Activity level
                     activityGroups.forEach((activity, events2) -> {
                         // Sort events by timestamp
                         events2.sort((xEvent1, xEvent2) -> ComparisonChain.start()
@@ -85,10 +87,7 @@ public class CsvSerializer implements XSerializer {
                                         xEvent2.getAttributes().getOrDefault("time:timestamp", defaultTimestamp).toString())
                                 .result());
 
-                        // Compose an event with start and end timestamps
-
                         Event csvEvent = new Event();
-
                         csvEvent.setCaseId(caseId);
                         csvEvent.setResource(resource);
                         csvEvent.setActivity(activity);
@@ -105,27 +104,41 @@ public class CsvSerializer implements XSerializer {
                             return transition.equals("complete");
                         }).toArray(XEvent[]::new);
 
-                        assert startEvents.length == completeEvents.length;
+                        if (startEvents.length == completeEvents.length) {
+                            for (int i = 0; i < startEvents.length; i++) {
+                                XEvent startEvent = startEvents[i];
+                                XEvent completeEvent = completeEvents[i];
 
-                        for (int i = 0; i < startEvents.length; i++) {
-                            XEvent startEvent = startEvents[i];
-                            XEvent completeEvent = completeEvents[i];
+                                XAttributeMap startAttributes = startEvent.getAttributes();
+                                XAttributeMap completeAttributes = completeEvent.getAttributes();
 
-                            XAttributeMap startAttributes = startEvent.getAttributes();
-                            XAttributeMap completeAttributes = completeEvent.getAttributes();
+                                String startTimestamp = startAttributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
+                                String completeTimestamp = completeAttributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
 
-                            String startTimestamp = startAttributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
-                            String completeTimestamp = completeAttributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
+                                csvEvent.setStartTimestamp(startTimestamp);
+                                csvEvent.setEndTimestamp(completeTimestamp);
 
-                            csvEvent.setStartTimestamp(startTimestamp);
-                            csvEvent.setEndTimestamp(completeTimestamp);
+                                try {
+                                    csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else if (startEvents.length == 0) {
+                            for (XEvent event : events2) {
+                                XAttributeMap attributes = event.getAttributes();
+                                String timestamp = attributes.getOrDefault("time:timestamp", defaultTimestamp).toString();
 
-                            try {
-                                csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                csvEvent.setEndTimestamp(timestamp);
+
+                                try {
+                                    csvPrinter.printRecord(csvEvent.getCaseId(), csvEvent.getActivity(), csvEvent.getResource(), csvEvent.getStartTimestamp(), csvEvent.getEndTimestamp());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
+
                     });
                 });
             });
